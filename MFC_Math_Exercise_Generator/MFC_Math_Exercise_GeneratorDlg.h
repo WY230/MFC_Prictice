@@ -32,15 +32,16 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 private:
+	int m_time[20] = {0};
 	int m_num1 = 0;
 	int count=0;
-	CString m_strsymbol;
-	CString m_strnum;
-	int m_result;
+	CString m_strsymbol[5];
+	CString m_strnum[5];
+	double m_result[20] = {0};
 	CString m_qs[20];
 	CString m_as[20];
 	CString m_tf[20];
-	CString m_score;
+	CString m_score=0;
 	// 定义控件ID数组
 	static const int IDC_QS_ARRAY[20];
 	static const int IDC_AS_ARRAY[20];
@@ -48,6 +49,10 @@ private:
 	int Createtime();
 	void Createnum(CString &m_str);
 	void Createsymbol(CString& m_str);
-	void Createmyqs();
+	void Createmyqs(CString m_symbol[5], CString m_num[5],int m_time[20]);
+	void Calculateqs();
 
+public:
+	afx_msg void OnBnClickedBtnshow();
+	afx_msg void OnBnClickedBtncommit();
 };

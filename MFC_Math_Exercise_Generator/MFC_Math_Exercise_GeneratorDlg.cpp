@@ -70,7 +70,7 @@ END_MESSAGE_MAP()
 
 
 CMFC_Math_Exercise_GeneratorDlg::CMFC_Math_Exercise_GeneratorDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MY6__DIALOG, pParent),m_score(_T(""))
+	: CDialogEx(IDD_MY6__DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -92,6 +92,7 @@ void CMFC_Math_Exercise_GeneratorDlg::DoDataExchange(CDataExchange* pDX)
 	{
 		DDX_Text(pDX, IDC_TF_ARRAY[i], m_tf[i]);
 	}
+
 	DDX_Text(pDX, IDC_SCORE, m_score);
 }
 
@@ -99,6 +100,8 @@ BEGIN_MESSAGE_MAP(CMFC_Math_Exercise_GeneratorDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_Btnshow, &CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtnshow)
+	ON_BN_CLICKED(IDC_Btncommit, &CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtncommit)
 END_MESSAGE_MAP()
 
 
@@ -135,7 +138,7 @@ BOOL CMFC_Math_Exercise_GeneratorDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
 	srand(time(NULL));
-	Createmyqs();
+	Createmyqs(m_strsymbol,m_strnum,m_time);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -207,44 +210,86 @@ void CMFC_Math_Exercise_GeneratorDlg::Createnum(CString& m_str)
 		 m_str.Format(_T("%d"), num);
 	
 }
-//生成算题
-void CMFC_Math_Exercise_GeneratorDlg::Createmyqs()
+//生成算题并计算
+void CMFC_Math_Exercise_GeneratorDlg::Createmyqs(CString m_symbol[5], CString m_num[5],int m_time[20])
 {
 	
 	for (int n=0; n < 20; n++)
 	{
-		int i = Createtime();
-		for (int j = 0; j < i; j++)
+		m_time[n] = Createtime();
+		for (int j = 0; j < m_time[n]; j++)
 		{
 			if (j == 0)
 			{
-				Createnum(m_strnum);
-				m_qs[n] = m_strnum;
-				m_result = _wtof(m_strnum);
+				Createnum(m_strnum[j]);
+				m_qs[n] = m_strnum[j];
 			}
 			else
 			{
-				Createnum(m_strnum);
-				m_num1 = _wtof(m_strnum);
+				Createnum(m_strnum[j]);
+				m_num1 = _wtoi(m_strnum[j]);
 				if (m_num1 != 0)
 				{
-					Createsymbol(m_strsymbol);
-
+					Createsymbol(m_strsymbol[j-1]);
 				}
 				else
 				{
-					Createsymbol(m_strsymbol);
-					while (m_strsymbol == "/")
+					Createsymbol(m_strsymbol[j-1]);
+					while (m_strsymbol[j-1] == "/")
 					{
-						Createsymbol(m_strsymbol);
+						Createsymbol(m_strsymbol[j-1]);
 					}
 				}
-				m_qs[n] += m_strsymbol;
-				m_qs[n] += m_strnum;
+				m_qs[n] += m_strsymbol[j-1];
+				m_qs[n] += m_strnum[j];
 				
 			}
 			
 		}
 	}
+	UpdateData(FALSE);
+}
+//系统计算数学题
+void CMFC_Math_Exercise_GeneratorDlg::Calculateqs()
+{
+	for (int i = 0; i < 20; i++)
+	{
+		
+	}
+}
+void CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtnshow()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	for (int i = 0; i < 20; i++)
+	{
+		m_qs[i].Empty();
+		m_as[i].Empty();
+		m_tf[i].Empty();
+		m_score.Empty();
+		count = 0;
+		Createmyqs(m_strsymbol, m_strnum, m_time);
+		
+	}
+	UpdateData(FALSE);
+}
+
+void CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtncommit()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	for (int i = 0; i < 20; i++)
+	{
+		if (_wtof(m_as[i]) != m_result[i]||m_as[i].IsEmpty())
+		{
+			m_tf[i].Format(_T("×"));
+			
+		}
+		else
+		{
+			count++;
+			m_tf[i].Format(_T("√"));
+		}
+	}
+	m_score.Format(_T("%d"), count );
 	UpdateData(FALSE);
 }

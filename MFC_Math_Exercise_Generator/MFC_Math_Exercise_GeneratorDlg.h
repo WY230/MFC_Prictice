@@ -32,7 +32,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 private:
-	int num=0;
+	int m_num1 = 0;
 	int count=0;
 	CString m_strsymbol;
 	CString m_strnum;

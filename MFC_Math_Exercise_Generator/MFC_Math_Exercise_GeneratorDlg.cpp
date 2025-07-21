@@ -220,13 +220,28 @@ void CMFC_Math_Exercise_GeneratorDlg::Createmyqs()
 			{
 				Createnum(m_strnum);
 				m_qs[n] = m_strnum;
+				m_result = _wtof(m_strnum);
 			}
 			else
 			{
-				Createsymbol(m_strsymbol);
-				m_qs[n] += m_strsymbol;
 				Createnum(m_strnum);
+				m_num1 = _wtof(m_strnum);
+				if (m_num1 != 0)
+				{
+					Createsymbol(m_strsymbol);
+
+				}
+				else
+				{
+					Createsymbol(m_strsymbol);
+					while (m_strsymbol == "/")
+					{
+						Createsymbol(m_strsymbol);
+					}
+				}
+				m_qs[n] += m_strsymbol;
 				m_qs[n] += m_strnum;
+				
 			}
 			
 		}

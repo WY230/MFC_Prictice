@@ -138,7 +138,15 @@ BOOL CMFC_Math_Exercise_GeneratorDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
 	srand(time(NULL));
-	Createmyqs(m_strsymbol,m_strnum,m_time);
+	for (int i=0; i < 20; i++)
+	{
+		Createmyqs(m_strsymbol, m_strnum);
+		m_qs[i] = m_qstemp;
+		Calculateqs(m_strsymbol, m_strnum);
+		m_result[i] = m_restemp;
+		UpdateData(FALSE);
+		
+	}
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -194,7 +202,8 @@ HCURSOR CMFC_Math_Exercise_GeneratorDlg::OnQueryDragIcon()
 int CMFC_Math_Exercise_GeneratorDlg::Createtime()
 {
 	
-	return 2 + rand() % 2;
+		return 2 + rand() % 2;
+	
 }
 //生成随机运算符
 void CMFC_Math_Exercise_GeneratorDlg::Createsymbol(CString& m_str)
@@ -210,52 +219,133 @@ void CMFC_Math_Exercise_GeneratorDlg::Createnum(CString& m_str)
 		 m_str.Format(_T("%d"), num);
 	
 }
-//生成算题并计算
-void CMFC_Math_Exercise_GeneratorDlg::Createmyqs(CString m_symbol[5], CString m_num[5],int m_time[20])
+//生成算题
+void CMFC_Math_Exercise_GeneratorDlg::Createmyqs(CString m_symbol[5], CString m_num[5])
 {
-	
-	for (int n=0; n < 20; n++)
+	 n=Createtime();
+	for (int j = 0; j <n; j++)
 	{
-		m_time[n] = Createtime();
-		for (int j = 0; j < m_time[n]; j++)
+		if (j == 0)
 		{
-			if (j == 0)
+			Createnum(m_strnum[j]);
+			m_qstemp = m_strnum[j];
+		}
+		else
+		{
+			Createnum(m_strnum[j]);
+			m_num1 = _wtoi(m_strnum[j]);
+			if (m_num1 != 0)
 			{
-				Createnum(m_strnum[j]);
-				m_qs[n] = m_strnum[j];
+				Createsymbol(m_strsymbol[j-1]);
 			}
 			else
 			{
-				Createnum(m_strnum[j]);
-				m_num1 = _wtoi(m_strnum[j]);
-				if (m_num1 != 0)
+				Createsymbol(m_strsymbol[j-1]);
+				while (m_strsymbol[j-1] == "/")
 				{
 					Createsymbol(m_strsymbol[j-1]);
 				}
-				else
-				{
-					Createsymbol(m_strsymbol[j-1]);
-					while (m_strsymbol[j-1] == "/")
-					{
-						Createsymbol(m_strsymbol[j-1]);
-					}
-				}
-				m_qs[n] += m_strsymbol[j-1];
-				m_qs[n] += m_strnum[j];
-				
+			}
+			m_qstemp += m_strsymbol[j-1];
+			m_qstemp += m_strnum[j];	
+		}
+			
+	}
+	
+}
+//系统计算数学题
+void CMFC_Math_Exercise_GeneratorDlg::Calculateqs(CString m_symbol[5], CString m_num[5])
+{
+	if (n ==2)
+	{
+		m_num1 = _wtoi(m_num[0]);
+		m_num2 = _wtoi(m_num[1]);
+		if (m_symbol[0] == '+')
+		{
+			m_restemp = m_num1 + m_num2;
+		}
+		else if(m_symbol[0] == '-')
+		{
+			m_restemp = m_num1 - m_num2;
+		}
+		else if (m_symbol[0] == '*')
+		{
+			m_restemp = m_num1 * m_num2;
+		}
+		else if (m_symbol[0] == '/')
+		{
+			m_restemp = m_num1 / m_num2;
+		}
+	}
+	else if(n == 3)
+	{
+		if ((m_symbol[0] == '+' || m_symbol[0] == '-') && (m_symbol[1] == '*' || m_symbol[1] == '/'))
+		{
+			m_num1 = _wtoi(m_num[1]);
+			m_num2 = _wtoi(m_num[2]);
+			if (m_symbol[1] == '*')
+			{
+				m_restemp = m_num1 * m_num2;
+			}
+			else if (m_symbol[1] == '/')
+			{
+				m_restemp = m_num1 / m_num2;
+			}
+			m_num1 = _wtoi(m_num[0]);
+			if (m_symbol[0] == '+')
+			{
+				m_restemp=m_num1 + m_restemp ;
+			}
+			else if (m_symbol[0] == '-')
+			{
+				m_restemp = m_num1- m_restemp ;
+			}
+		
+		}
+		else
+		{
+			m_num1 = _wtoi(m_num[0]);
+			m_num2 = _wtoi(m_num[1]);
+			if (m_symbol[0] == '+')
+			{
+				m_restemp = m_num1 + m_num2;
+
+			}
+			else if (m_symbol[0] == '-')
+			{
+				m_restemp = m_num1 - m_num2;
+			}
+			else if (m_symbol[0] == '*')
+			{
+				m_restemp = m_num1 * m_num2;
+			}
+			else if (m_symbol[0] == '/')
+			{
+				m_restemp = m_num1 / m_num2;
+			}
+			
+			m_num1 = _wtoi(m_num[2]);
+			if (m_symbol[1] == '+')
+			{
+				m_restemp = m_restemp +m_num1;
+			}
+			else if (m_symbol[1] == '-')
+			{
+				m_restemp = m_restemp - m_num1;
+			}
+			else if (m_symbol[1] == '*')
+			{
+				m_restemp = m_restemp * m_num1;
+			}
+			else if (m_symbol[1] == '/')
+			{
+					m_restemp = m_restemp / m_num1;
 			}
 			
 		}
+
 	}
-	UpdateData(FALSE);
-}
-//系统计算数学题
-void CMFC_Math_Exercise_GeneratorDlg::Calculateqs()
-{
-	for (int i = 0; i < 20; i++)
-	{
-		
-	}
+
 }
 void CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtnshow()
 {
@@ -267,7 +357,14 @@ void CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtnshow()
 		m_tf[i].Empty();
 		m_score.Empty();
 		count = 0;
-		Createmyqs(m_strsymbol, m_strnum, m_time);
+		for (int i = 0; i < 20; i++)
+		{
+			Createmyqs(m_strsymbol, m_strnum);
+			m_qs[i] = m_qstemp;
+			Calculateqs(m_strsymbol, m_strnum);
+			m_result[i] = m_restemp;
+
+		}
 		
 	}
 	UpdateData(FALSE);

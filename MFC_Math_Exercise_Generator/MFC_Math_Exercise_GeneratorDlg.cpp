@@ -370,7 +370,7 @@ void CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtnshow()
 		for (int j = 0; j < 20; j++)
 		{
 			Createmyqs(m_strsymbol, m_strnum);
-			m_qs[i] = m_qstemp;
+			m_qs[j] = m_qstemp;
 			Calculateqs(m_strsymbol, m_strnum);
 			m_result[j] = m_restemp;
 
@@ -378,6 +378,7 @@ void CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtnshow()
 		
 	}
 	UpdateData(FALSE);
+
 }
 
 void CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtncommit()

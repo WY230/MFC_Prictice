@@ -258,8 +258,8 @@ void CMFC_Math_Exercise_GeneratorDlg::Calculateqs(CString m_symbol[5], CString m
 {
 	if (n ==2)
 	{
-		m_num1 = _wtoi(m_num[0]);
-		m_num2 = _wtoi(m_num[1]);
+		m_num1 = _wtof(m_num[0]);
+		m_num2 = _wtof(m_num[1]);
 		if (m_symbol[0] == '+')
 		{
 			m_restemp = m_num1 + m_num2;
@@ -274,24 +274,29 @@ void CMFC_Math_Exercise_GeneratorDlg::Calculateqs(CString m_symbol[5], CString m
 		}
 		else if (m_symbol[0] == '/')
 		{
-			m_restemp = m_num1 / m_num2;
+			double result = m_num1 / m_num2;
+			//四舍五入到小数点后三位
+			m_restemp = round(result * 1000) / 1000;
 		}
 	}
 	else if(n == 3)
 	{
 		if ((m_symbol[0] == '+' || m_symbol[0] == '-') && (m_symbol[1] == '*' || m_symbol[1] == '/'))
 		{
-			m_num1 = _wtoi(m_num[1]);
-			m_num2 = _wtoi(m_num[2]);
+			m_num1 = _wtof(m_num[1]);
+			m_num2 = _wtof(m_num[2]);
 			if (m_symbol[1] == '*')
 			{
 				m_restemp = m_num1 * m_num2;
 			}
 			else if (m_symbol[1] == '/')
 			{
-				m_restemp = m_num1 / m_num2;
+					double result = m_num1/m_num2;
+					// ，四舍五入到小数点后三位
+					m_restemp = round(result * 1000) / 1000;
+
 			}
-			m_num1 = _wtoi(m_num[0]);
+			m_num1 = _wtof(m_num[0]);
 			if (m_symbol[0] == '+')
 			{
 				m_restemp=m_num1 + m_restemp ;
@@ -304,8 +309,8 @@ void CMFC_Math_Exercise_GeneratorDlg::Calculateqs(CString m_symbol[5], CString m
 		}
 		else
 		{
-			m_num1 = _wtoi(m_num[0]);
-			m_num2 = _wtoi(m_num[1]);
+			m_num1 = _wtof(m_num[0]);
+			m_num2 = _wtof(m_num[1]);
 			if (m_symbol[0] == '+')
 			{
 				m_restemp = m_num1 + m_num2;
@@ -321,10 +326,13 @@ void CMFC_Math_Exercise_GeneratorDlg::Calculateqs(CString m_symbol[5], CString m
 			}
 			else if (m_symbol[0] == '/')
 			{
-				m_restemp = m_num1 / m_num2;
+				double result = m_num1 / m_num2;
+				// 四舍五入到小数点后三位
+				m_restemp = round(result * 1000) / 1000;
+
 			}
 			
-			m_num1 = _wtoi(m_num[2]);
+			m_num1 = _wtof(m_num[2]);
 			if (m_symbol[1] == '+')
 			{
 				m_restemp = m_restemp +m_num1;
@@ -339,7 +347,9 @@ void CMFC_Math_Exercise_GeneratorDlg::Calculateqs(CString m_symbol[5], CString m
 			}
 			else if (m_symbol[1] == '/')
 			{
-					m_restemp = m_restemp / m_num1;
+				double result = m_restemp / m_num1;
+				// 四舍五入到小数点后三位
+				m_restemp = round(result * 1000) / 1000;
 			}
 			
 		}
@@ -357,12 +367,12 @@ void CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtnshow()
 		m_tf[i].Empty();
 		m_score.Empty();
 		count = 0;
-		for (int i = 0; i < 20; i++)
+		for (int j = 0; j < 20; j++)
 		{
 			Createmyqs(m_strsymbol, m_strnum);
 			m_qs[i] = m_qstemp;
 			Calculateqs(m_strsymbol, m_strnum);
-			m_result[i] = m_restemp;
+			m_result[j] = m_restemp;
 
 		}
 		
@@ -386,7 +396,9 @@ void CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtncommit()
 			count++;
 			m_tf[i].Format(_T("√"));
 		}
+		TRACE(_T("题目%d: 用户输入=%.4f, 正确答案=%.4f\n"), i, _wtof(m_as[i]), m_result[i]);
 	}
 	m_score.Format(_T("%d"), count );
 	UpdateData(FALSE);
+	count = 0;
 }

@@ -39,4 +39,6 @@ private:
 	DLG1 dlg1;
 	DLG2 dlg2;
 	DLG3 dlg3;
+public:
+	afx_msg void OnBnClickedButton1();
 };

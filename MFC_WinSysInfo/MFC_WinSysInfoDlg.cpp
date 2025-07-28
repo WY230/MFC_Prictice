@@ -8,6 +8,9 @@
 #include "MFC_WinSysInfoDlg.h"
 #include "afxdialogex.h"
 #include"TabSheet.h"
+#include"DLG1.h"
+#include"DLG2.h"
+#include"DLG3.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -67,6 +70,7 @@ BEGIN_MESSAGE_MAP(CMFCWinSysInfoDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON1, &CMFCWinSysInfoDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -158,3 +162,9 @@ HCURSOR CMFCWinSysInfoDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+void CMFCWinSysInfoDlg::OnBnClickedButton1()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	dlg2.OnInitDialog();
+}

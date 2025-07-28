@@ -120,7 +120,7 @@ BOOL DLG2::OnInitDialog()
 		//CPU速度
 		if (RegQueryValueEx(hKey, _T("~MHz"), NULL, NULL, (LPBYTE)&dwCPUspeed, &dwSize2) == ERROR_SUCCESS)
 		{
-			m_cs.Format(_T("%u GHZ"), dwCPUspeed);
+			m_cs.Format(_T("%u MHZ"), dwCPUspeed);
 		}
 		//CPU厂商信息
 		if (RegQueryValueEx(hKey, _T("VendorIdentifier"), NULL, NULL, (LPBYTE)szCPUinfo, &dwSize3) == ERROR_SUCCESS)

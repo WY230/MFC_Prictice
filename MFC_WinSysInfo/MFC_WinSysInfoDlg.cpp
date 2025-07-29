@@ -166,5 +166,6 @@ HCURSOR CMFCWinSysInfoDlg::OnQueryDragIcon()
 void CMFCWinSysInfoDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	
 	dlg2.OnInitDialog();
 }

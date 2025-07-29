@@ -12,6 +12,7 @@ public:
 	DLG1(CWnd* pParent = nullptr);   // 标准构造函数
 	virtual ~DLG1();
 	virtual BOOL OnInitDialog();
+	void EnumInstalledSoftware();
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DLG1 };

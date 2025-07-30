@@ -114,7 +114,7 @@ BOOL DLG1::OnInitDialog()
 	m_list1.InsertColumn(2, _T("生产厂商"), LVCFMT_LEFT, 200);
 	m_list1.InsertColumn(3, _T("安装路径"), LVCFMT_LEFT, 200);
     EnumInstalledSoftware();
-	m_list1.SetExtendedStyle( LVS_EX_FULLROWSELECT || LVS_EX_GRIDLINES);
+	m_list1.SetExtendedStyle( LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	return TRUE;
 }
 

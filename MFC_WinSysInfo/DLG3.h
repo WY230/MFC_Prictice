@@ -22,7 +22,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
-private:
+public:
 	CListCtrl m_list2;
 	CString dlg3_C;
 	CString dlg3_D;

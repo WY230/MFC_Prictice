@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CMFCWinSysInfoDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CMFCWinSysInfoDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMFCWinSysInfoDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -166,6 +167,23 @@ HCURSOR CMFCWinSysInfoDlg::OnQueryDragIcon()
 void CMFCWinSysInfoDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	
+	dlg1.m_list1.DeleteAllItems();
+	while (dlg1.m_list1.GetHeaderCtrl()->GetItemCount() > 0)
+	{
+		dlg1.m_list1.DeleteColumn(0);
+	}
+	dlg1.OnInitDialog();
 	dlg2.OnInitDialog();
+	dlg3.m_list2.DeleteAllItems();
+	while (dlg3.m_list2.GetHeaderCtrl()->GetItemCount() > 0)
+	{
+		dlg3.m_list2.DeleteColumn(0);
+	}
+	dlg3.OnInitDialog();
+}
+
+void CMFCWinSysInfoDlg::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CMFCWinSysInfoDlg::OnOK();
 }

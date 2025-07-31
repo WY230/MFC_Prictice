@@ -42,7 +42,6 @@ void DLG1::EnumInstalledSoftware()
     TCHAR szSubKeyName[512] = { 0 };
     DWORD dwSize;
     DWORD dwIndex = 0;
-    int nItem = 0;
     // 打开注册表的路径
     if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,
         _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"),
@@ -92,7 +91,7 @@ void DLG1::EnumInstalledSoftware()
                         }
                 }
                 // 添加到列表控件
-                m_list1.InsertItem(nItem, szDisplayName);
+                int nItem=m_list1.InsertItem(m_list1.GetItemCount(), szDisplayName);
                 m_list1.SetItemText(nItem, 1, szDisplayVersion);
                 m_list1.SetItemText(nItem, 2, szPublisher);
                 m_list1.SetItemText(nItem, 3, szInstallLocation);

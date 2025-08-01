@@ -1,0 +1,15 @@
+.vs/
+x64/
+*.aps
+*.obj
+*.pch
+*.ilk
+*.lib
+*.exp
+*.pdb
+*.exe
+*.dll
+*.sdf
+*.suo
+*.user
+*.res

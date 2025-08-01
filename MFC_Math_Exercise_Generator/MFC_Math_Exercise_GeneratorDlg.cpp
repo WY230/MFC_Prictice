@@ -102,6 +102,7 @@ BEGIN_MESSAGE_MAP(CMFC_Math_Exercise_GeneratorDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_Btnshow, &CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtnshow)
 	ON_BN_CLICKED(IDC_Btncommit, &CMFC_Math_Exercise_GeneratorDlg::OnBnClickedBtncommit)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 

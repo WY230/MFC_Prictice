@@ -75,24 +75,25 @@ void CMEM::DrawMEMusage()
 	pDC->FillSolidRect(rect,RGB(255,255,255));
 	pDC->MoveTo(rect.left,rect.bottom);
 	pDC->LineTo(rect.right,rect.bottom);
-	pDC->LineTo(rect.left,rect.bottom);
+	pDC->MoveTo(rect.left, rect.bottom);
+	pDC->LineTo(rect.left,rect.top);
 	if (m_memhistory.size() < 2)
 	{
 		return;
 	}
 	int margin = 5;
-	int width = rect.Width() - margin * 2;
-	int height = rect.Height() - margin * 2;
+	double width = rect.Width() - margin * 2;
+	double height = rect.Height() - margin * 2;
 	int pointcount = (int)m_memhistory.size();
 	double Xstep = (double)width / (MAX_POINT - 1);
 	CPen pen (PS_SOLID,2,RGB(0,100,200));
 	CPen* poldpen = pDC->SelectObject(&pen);
 	for (int i=1;i<pointcount;i++)
 	{
-		int x1 = margin + (i - 1) * Xstep;
-		int x2 = margin + i * Xstep;
-		int y1 = rect.Height() - margin - (m_memhistory[i-1]/100 * height);
-		int y2 = rect.Height() - margin - (m_memhistory[i ]/100 * height);
+		double x1 = (double)(margin + (i - 1) * Xstep);
+		double x2 = (double)(margin + i * Xstep);
+		double y1 = (double)(rect.bottom - margin - (m_memhistory[i - 1] / 100 * height));
+		double y2 = (double)(rect.bottom - margin - (m_memhistory[i] / 100 * height));
 		pDC->MoveTo(x1,y1);
 		pDC->LineTo(x2, y2);
 	}

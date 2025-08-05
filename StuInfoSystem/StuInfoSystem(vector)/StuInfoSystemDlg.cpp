@@ -68,6 +68,9 @@ BEGIN_MESSAGE_MAP(CStuInfoSystemDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CStuInfoSystemDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON6, &CStuInfoSystemDlg::OnBnClickedButton6)
+	ON_BN_CLICKED(IDC_BUTTON2, &CStuInfoSystemDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CStuInfoSystemDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CStuInfoSystemDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -167,24 +170,10 @@ HCURSOR CStuInfoSystemDlg::OnQueryDragIcon()
 void CStuInfoSystemDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	m_list.DeleteAllItems();
+	//m_list.DeleteAllItems();
 	if (SQL.Connect_Mysql())
 	{
-		Info=SQL.Get_AllData();
-		CString str;
-		for (int i=0; i < Info.size(); i++)
-		{
-			m_list.InsertItem(i, Info[i].m_name.c_str());
-			m_list.SetItemText(i,1, Info[i].m_gender.c_str());
-			str.Format(_T("%d"), Info[i].m_class_);
-			m_list.SetItemText(i, 2,str );
-			str.Format(_T("%.1f"), Info[i].m_score1);
-			m_list.SetItemText(i, 3, str);
-			str.Format(_T("%.1f"), Info[i].m_score2);
-			m_list.SetItemText(i, 4, str);
-			str.Format(_T("%.1f"), Info[i].m_score3);
-			m_list.SetItemText(i, 5, str);
-		}
+		DisplayData();
 	}
 	else
 	{
@@ -196,4 +185,114 @@ void CStuInfoSystemDlg::OnBnClickedButton6()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	exit(0);
+}
+
+void CStuInfoSystemDlg::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if (dlgadd.DoModal() == IDOK) //在dlgadd里点击确定按钮
+	{
+		if (SQL.AddData(StuInfo(dlgadd.m_strname.GetBuffer(), dlgadd.m_strgender.GetBuffer(),
+			atoi(dlgadd.m_strclass), _ttof(dlgadd.m_strsocre1), _ttof(dlgadd.m_strsocre2),
+			_ttof(dlgadd.m_strscore3))))
+		{
+			MessageBox(_T("添加成功！"),_T("提示"));
+			Info.push_back(StuInfo(dlgadd.m_strname.GetBuffer(), dlgadd.m_strgender.GetBuffer(),
+				atoi(dlgadd.m_strclass), _ttof(dlgadd.m_strsocre1), _ttof(dlgadd.m_strsocre2),
+				_ttof(dlgadd.m_strscore3)));
+			dlgadd.m_strname.ReleaseBuffer();
+			dlgadd.m_strgender.ReleaseBuffer();
+			dlgadd.m_strname.Empty();
+			dlgadd.m_strgender.Empty();
+			dlgadd.m_strclass.Empty();
+			dlgadd.m_strsocre1.Empty();
+			dlgadd.m_strsocre2.Empty();
+			dlgadd.m_strscore3.Empty();
+		}
+		DisplayData();
+		
+	}
+}
+void CStuInfoSystemDlg::DisplayData()
+{
+	m_list.DeleteAllItems();
+	Info = SQL.Get_AllData();
+	CString str;
+	for (int i = 0; i < Info.size(); i++)
+	{
+		m_list.InsertItem(i, Info[i].m_name.c_str());//将string类型变量转变为MFC支持的C语言中的char*
+		m_list.SetItemText(i, 1, Info[i].m_gender.c_str());
+		str.Format(_T("%d"), Info[i].m_class_);
+		m_list.SetItemText(i, 2, str);
+		str.Format(_T("%.1f"), Info[i].m_score1);
+		m_list.SetItemText(i, 3, str);
+		str.Format(_T("%.1f"), Info[i].m_score2);
+		m_list.SetItemText(i, 4, str);
+		str.Format(_T("%.1f"), Info[i].m_score3);
+		m_list.SetItemText(i, 5, str);
+	}
+}
+
+void CStuInfoSystemDlg::OnBnClickedButton3()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int Index = m_list.GetSelectionMark();
+	if (Index == -1)
+	{
+		MessageBox(_T("请先选择要删除的数据"),_T("提示"));
+		return;
+	}
+	else
+	{
+		UINT i;
+		i = MessageBox(_T("确定要删除这条信息吗？"),_T("提示"),MB_YESNO|MB_ICONQUESTION);
+		if (i == IDYES)
+		{
+			if (SQL.DelData(Info[Index]))
+			{
+				
+				MessageBox(_T("删除成功！"),_T("提示"));
+				Info.erase(Info.begin() + Index);
+			}
+		}
+	}
+	DisplayData();
+}
+
+void CStuInfoSystemDlg::OnBnClickedButton4()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	
+	int Index = m_list.GetSelectionMark();
+	if (Index == -1)
+	{
+		MessageBox(_T("请选择要修改信息的学生数据"),_T("提示"));
+		return;
+	}
+	else
+	{
+		
+		dlgupdate.m_newname = Info[Index].m_name.c_str();
+		dlgupdate.m_newgender = Info[Index].m_gender.c_str();
+		dlgupdate.m_newclass.Format(_T("%d"), Info[Index].m_class_);
+		dlgupdate.m_newscore1.Format(_T("%lf"), Info[Index].m_score1);
+		dlgupdate.m_newscore2.Format(_T("%lf"), Info[Index].m_score2);
+		dlgupdate.m_newscore3.Format(_T("%lf"), Info[Index].m_score3);
+		UpdateData(FALSE);
+		if(dlgupdate.DoModal()==IDOK)
+		{ 
+			if (SQL.UpDateInfo(Info[Index], StuInfo(dlgupdate.m_newname.GetBuffer(), dlgupdate.m_newgender.GetBuffer(),
+				atoi(dlgupdate.m_newclass), _ttof(dlgupdate.m_newscore1), _ttof(dlgupdate.m_newscore2),
+				_ttof(dlgupdate.m_newscore3))))
+			{
+				MessageBox(_T("修改成功！"), _T("提示"));
+				Info[Index] = StuInfo(dlgupdate.m_newname.GetBuffer(), dlgupdate.m_newgender.GetBuffer(),
+					atoi(dlgupdate.m_newclass), _ttof(dlgupdate.m_newscore1), _ttof(dlgupdate.m_newscore2),
+					_ttof(dlgupdate.m_newscore3));
+				dlgupdate.m_newname.ReleaseBuffer();
+				dlgupdate.m_newgender.ReleaseBuffer();
+			}
+		}
+		DisplayData();
+	}	
 }

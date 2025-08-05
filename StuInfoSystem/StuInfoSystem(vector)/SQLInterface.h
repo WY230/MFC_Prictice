@@ -11,5 +11,8 @@ public:
 	char sql[SQL_MAX];  //存储SQL语句
 	bool Connect_Mysql();	//连接数据库
 	vector<StuInfo> Get_AllData();	//获取全部的数据库信息
+	bool AddData(StuInfo Info);
+	bool DelData(StuInfo Info);
+	bool UpDateInfo(StuInfo oldInfo, StuInfo newInfo);
 };
 

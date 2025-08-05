@@ -40,3 +40,57 @@ vector<StuInfo> SQLInterface::Get_AllData()
 	return Info;
 	
 }
+
+bool SQLInterface::AddData(StuInfo Info)
+{
+	snprintf(sql,SQL_MAX,"INSERT INTO info1 values('%s','%s','%d','%lf','%lf','%lf')"
+		,Info.m_name.c_str(), Info.m_gender.c_str(), Info.m_class_, Info.m_score1, Info.m_score2, Info.m_score3);
+	//CString strDebug;
+	//strDebug.Format(_T("SQL: %hs"), sql);  // 显示生成的SQL
+	//AfxMessageBox(strDebug);
+	int ret = mysql_real_query(&mysqlCon,sql,(unsigned long)strlen(sql));
+	if (ret)
+	{
+		CString errMsg;
+		errMsg.Format(_T("添加失败！MySQL错误: %s"), mysql_error(&mysqlCon));
+		AfxMessageBox(errMsg); // 显示具体错误
+		return false;
+	}
+	return true;
+}
+
+bool SQLInterface::DelData(StuInfo Info)
+{
+	snprintf(sql, SQL_MAX, "delete from info1 where name='%s'",Info.m_name.c_str() );
+	int ret = mysql_real_query(&mysqlCon, sql, (unsigned long)strlen(sql));
+	if (ret)
+	{
+		CString errMsg;
+		CString strSQL;
+		strSQL.Format(_T("调试SQL: %hs"), sql);
+		AfxMessageBox(strSQL);
+		errMsg.Format(_T("删除失败！MySQL错误: %s"), mysql_error(&mysqlCon));
+		AfxMessageBox(errMsg); // 显示具体错误
+		return false;
+	}
+	return true;
+}
+
+bool SQLInterface::UpDateInfo(StuInfo oldInfo, StuInfo newInfo)
+{
+	snprintf(sql, SQL_MAX, "UPDATE info1 SET NAME='%s',gender='%s',class_=%d,score1=%lf,score2=%lf,score3=%lf where name='%s' "
+		, newInfo.m_name.c_str(), newInfo.m_gender.c_str(), newInfo.m_class_, newInfo.m_score1, newInfo.m_score2, newInfo.m_score3,oldInfo.m_name.c_str());
+	//CString strDebug;
+	//strDebug.Format(_T("SQL: %hs"), sql);  // 显示生成的SQL
+	//AfxMessageBox(strDebug);
+	int ret = mysql_real_query(&mysqlCon, sql, (unsigned long)strlen(sql));
+	if (ret)
+	{
+		CString errMsg;
+		errMsg.Format(_T("修改失败！MySQL错误: %s"), mysql_error(&mysqlCon));
+		AfxMessageBox(errMsg); // 显示具体错误
+		return false;
+	}
+	return true;
+}
+

@@ -39,6 +39,12 @@
     <ClInclude Include="StuInfo.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CADD.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Cupdate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StuInfoSystem.cpp">
@@ -54,6 +60,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="StuInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CADD.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Cupdate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

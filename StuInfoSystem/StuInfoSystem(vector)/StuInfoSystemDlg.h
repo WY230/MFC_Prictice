@@ -6,6 +6,8 @@
 #include"SQLInterface.h"
 #include<vector>
 #include"StuInfo.h"
+#include"CADD.h"
+#include"Cupdate.h"
 
 
 // CStuInfoSystemDlg 对话框
@@ -40,5 +42,11 @@ public:
 	afx_msg void OnBnClickedButton1();
 	vector<StuInfo> Info;
 	CListCtrl m_list;
+	CADD dlgadd;
+	Cupdate dlgupdate;
 	afx_msg void OnBnClickedButton6();
+	afx_msg void OnBnClickedButton2();
+	void DisplayData();
+	afx_msg void OnBnClickedButton3();
+	afx_msg void OnBnClickedButton4();
 };

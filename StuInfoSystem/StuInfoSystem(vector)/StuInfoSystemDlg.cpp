@@ -7,6 +7,7 @@
 #include "StuInfoSystem.h"
 #include "StuInfoSystemDlg.h"
 #include "afxdialogex.h"
+#include <algorithm>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,6 +53,10 @@ END_MESSAGE_MAP()
 
 CStuInfoSystemDlg::CStuInfoSystemDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_STUINFOSYSTEM_DIALOG, pParent)
+	, m_avg(_T(""))
+	, m_max(_T(""))
+	, m_min(_T(""))
+	, m_passrate(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -60,6 +65,14 @@ void CStuInfoSystemDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_list);
+	DDX_Control(pDX, IDC_COMBO1, m_classctrl);
+	DDX_Control(pDX, IDC_COMBO2, m_subjecyctrl);
+	DDX_Text(pDX, IDC_EDIT1, m_avg);
+	DDX_Text(pDX, IDC_EDIT2, m_max);
+	DDX_Text(pDX, IDC_EDIT3, m_min);
+	DDX_Text(pDX, IDC_EDIT4, m_passrate);
+	DDX_Control(pDX, IDC_COMBO3, m_rule1);
+	DDX_Control(pDX, IDC_COMBO4, m_rule2);
 }
 
 BEGIN_MESSAGE_MAP(CStuInfoSystemDlg, CDialogEx)
@@ -71,6 +84,11 @@ BEGIN_MESSAGE_MAP(CStuInfoSystemDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CStuInfoSystemDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CStuInfoSystemDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CStuInfoSystemDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON5, &CStuInfoSystemDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON7, &CStuInfoSystemDlg::OnBnClickedButton7)
+//	ON_CBN_EDITCHANGE(IDC_COMBO3, &CStuInfoSystemDlg::OnCbnEditchangeCombo3)
+ON_CBN_SELCHANGE(IDC_COMBO3, &CStuInfoSystemDlg::OnCbnSelchangeCombo3)
+ON_CBN_SELCHANGE(IDC_COMBO4, &CStuInfoSystemDlg::OnCbnSelchangeCombo4)
 END_MESSAGE_MAP()
 
 
@@ -113,6 +131,27 @@ BOOL CStuInfoSystemDlg::OnInitDialog()
 	m_list.InsertColumn(3, _T("语文"), LVCFMT_LEFT, 150);
 	m_list.InsertColumn(4, _T("数学"), LVCFMT_LEFT, 150);
 	m_list.InsertColumn(5, _T("英语"), LVCFMT_LEFT, 150);
+
+	m_classctrl.AddString(_T("1班"));
+	m_classctrl.AddString(_T("2班"));
+	m_classctrl.AddString(_T("3班"));
+	m_classctrl.AddString(_T("全部"));
+	m_classctrl.SetCurSel(3);
+	m_subjecyctrl.AddString(_T("语文"));
+	m_subjecyctrl.AddString(_T("数学"));
+	m_subjecyctrl.AddString(_T("英语"));
+	m_subjecyctrl.SetCurSel(0);
+
+	m_rule1.AddString(_T("班级"));
+	m_rule1.AddString(_T("语文"));
+	m_rule1.AddString(_T("数学"));
+	m_rule1.AddString(_T("英语"));
+	m_rule1.SetCurSel(0);
+	
+	
+	m_rule2.AddString(_T("降序"));
+	m_rule2.AddString(_T("升序"));
+	m_rule2.SetCurSel(0);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -173,6 +212,7 @@ void CStuInfoSystemDlg::OnBnClickedButton1()
 	//m_list.DeleteAllItems();
 	if (SQL.Connect_Mysql())
 	{
+		Info = SQL.Get_AllData();
 		DisplayData();
 	}
 	else
@@ -184,7 +224,14 @@ void CStuInfoSystemDlg::OnBnClickedButton1()
 void CStuInfoSystemDlg::OnBnClickedButton6()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	exit(0);
+	UINT i;
+	i = MessageBox(_T("是否确认退出？"),_T("提示"),MB_YESNO|MB_ICONQUESTION);
+	if (i == IDYES)
+	{
+		SQL.Close_SQL();
+		exit(0);
+	}
+	
 }
 
 void CStuInfoSystemDlg::OnBnClickedButton2()
@@ -216,7 +263,6 @@ void CStuInfoSystemDlg::OnBnClickedButton2()
 void CStuInfoSystemDlg::DisplayData()
 {
 	m_list.DeleteAllItems();
-	Info = SQL.Get_AllData();
 	CString str;
 	for (int i = 0; i < Info.size(); i++)
 	{
@@ -296,3 +342,198 @@ void CStuInfoSystemDlg::OnBnClickedButton4()
 		DisplayData();
 	}	
 }
+
+void CStuInfoSystemDlg::OnBnClickedButton5()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if (dlgselect.DoModal() == IDOK)
+	{
+		vector <StuInfo> result= SQL.SelectInfo(dlgselect.m_select_name);
+		m_list.DeleteAllItems();
+		CString str;
+		if (result.empty())
+		{
+			MessageBox(_T("查无此人！"),_T("提示") );
+			return;
+		}
+		else
+		{
+			for (int i = 0; i < result.size(); i++)
+			{
+				m_list.InsertItem(i, result[i].m_name.c_str());
+				m_list.SetItemText(i, 1, result[i].m_gender.c_str());
+				str.Format(_T("%d"), result[i].m_class_);
+				m_list.SetItemText(i, 2, str);
+				str.Format(_T("%.1f"), result[i].m_score1);
+				m_list.SetItemText(i, 3, str);
+				str.Format(_T("%.1f"), result[i].m_score2);
+				m_list.SetItemText(i, 4, str);
+				str.Format(_T("%.1f"), result[i].m_score3);
+				m_list.SetItemText(i, 5, str);
+			}
+			MessageBox(_T("查找成功"), _T("提示"));
+			dlgselect.m_select_name.Empty();
+		}
+		
+	}
+}
+
+void CStuInfoSystemDlg::OnBnClickedButton7()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int select_class = m_classctrl.GetCurSel();
+	int select_subject = m_subjecyctrl.GetCurSel();
+	vector<double> scores;
+	for (int i = 0; i < Info.size(); i++)
+	{
+		int current_class = Info[i].m_class_;
+		if (current_class == select_class + 1 || select_class == 3)
+		{
+			switch (select_subject)
+			{
+			case 0:
+			{
+				scores.push_back(Info[i].m_score1);
+				break;
+			}
+			case 1:
+			{
+				scores.push_back(Info[i].m_score2);
+				break;
+			}
+			case 2:
+			{
+				scores.push_back(Info[i].m_score3);
+				break;
+			}
+			default:
+			{
+				break;
+			}
+			}
+		}
+	}
+	double sum = 0;
+	int num = scores.size();
+	double avg = 0;
+	double max_score=0;
+	double min_score = 100;
+	double pass = 0;
+	double pass_rate = 0.0;
+	for (int i = 0; i < scores.size(); i++)
+	{
+		sum += scores[i];
+		max_score = max(max_score, scores[i]);
+		min_score = min(min_score, scores[i]);
+		if (scores[i] >= 60)
+		{
+			++pass;
+		}
+
+	}
+	avg = sum / num;
+	pass_rate = pass / num;
+	m_avg.Format(_T("%.2f"),avg);
+	m_max.Format(_T("%lf"), max_score);
+	m_min.Format(_T("%lf"), min_score);
+	m_passrate.Format(_T("%.2f%%"),pass_rate*100);
+	UpdateData(FALSE);
+
+}
+ bool CStuInfoSystemDlg::signal = false;
+ bool CStuInfoSystemDlg::cmp_by_class(StuInfo a, StuInfo b)
+{
+	 if (signal == false)
+	 {
+		 return a.m_class_ > b.m_class_;
+	 }
+	 else
+	 {
+		 return a.m_class_ < b.m_class_;
+	 }
+	
+}
+ bool CStuInfoSystemDlg::cmp_by_score1(StuInfo a, StuInfo b)
+ {
+	 if (signal == false)
+	 {
+		 return a.m_score1 > b.m_score1;
+	 }
+	 else
+	 {
+		 return a.m_score1 < b.m_score1;
+	 }
+	
+ }
+ bool CStuInfoSystemDlg::cmp_by_score2(StuInfo a, StuInfo b)
+ {
+	 if (signal == false)
+	 {
+		 return a.m_score2 > b.m_score2;
+	 }
+	 else
+	 {
+		 return a.m_score2 < b.m_score2;
+	 }
+ }
+ bool CStuInfoSystemDlg::cmp_by_score3(StuInfo a, StuInfo b)
+ {
+	 if (signal == false)
+	 {
+		 return a.m_score3 > b.m_score3;
+	 }
+	 else
+	 {
+		 return a.m_score3 < b.m_score3;
+	 }
+ }
+
+ void CStuInfoSystemDlg::OnCbnSelchangeCombo3()
+ {
+	 // TODO: 在此添加控件通知处理程序代码
+	 int Index = m_rule1.GetCurSel();
+	 	switch (Index)
+	 	{
+	 		case 0:
+	 		{
+	 			sort(Info.begin(),Info.end(),cmp_by_class);
+				break;
+	 		}
+	 		case 1:
+	 		{
+	 			sort(Info.begin(), Info.end(), cmp_by_score1);
+				break;
+	 		}
+	 		case 2:
+	 		{
+	 			sort(Info.begin(), Info.end(), cmp_by_score2);
+				break;
+	 		}
+	 		case 3:
+	 		{
+	 			sort(Info.begin(), Info.end(), cmp_by_score3);
+				break;
+	 		}
+			default:
+			{
+				break;
+			}
+	 	}
+	 	
+		DisplayData();
+ }
+
+ void CStuInfoSystemDlg::OnCbnSelchangeCombo4()
+ {
+	 // TODO: 在此添加控件通知处理程序代码
+	 int Index = m_rule2.GetCurSel();
+	 if (Index == 0)
+	 {
+		 signal = false;
+	 }
+	 else
+	 {
+		 signal= true;
+	 }
+	 OnCbnSelchangeCombo3();
+ }

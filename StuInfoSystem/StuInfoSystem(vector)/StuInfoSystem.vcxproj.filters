@@ -45,6 +45,9 @@
     <ClInclude Include="Cupdate.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Cselect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StuInfoSystem.cpp">
@@ -66,6 +69,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Cupdate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Cselect.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

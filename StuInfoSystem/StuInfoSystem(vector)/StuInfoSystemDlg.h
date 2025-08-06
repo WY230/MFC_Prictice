@@ -8,6 +8,7 @@
 #include"StuInfo.h"
 #include"CADD.h"
 #include"Cupdate.h"
+#include"Cselect.h"
 
 
 // CStuInfoSystemDlg 对话框
@@ -43,10 +44,28 @@ public:
 	vector<StuInfo> Info;
 	CListCtrl m_list;
 	CADD dlgadd;
+	Cselect dlgselect;
 	Cupdate dlgupdate;
 	afx_msg void OnBnClickedButton6();
 	afx_msg void OnBnClickedButton2();
 	void DisplayData();
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnBnClickedButton4();
+	afx_msg void OnBnClickedButton5();
+	CComboBox m_classctrl;
+	CComboBox m_subjecyctrl;
+	CString m_avg;
+	CString m_max;
+	CString m_min;
+	CString m_passrate;
+	afx_msg void OnBnClickedButton7();
+	CComboBox m_rule1;
+	afx_msg void OnCbnSelchangeCombo3();
+	CComboBox m_rule2;
+	afx_msg void OnCbnSelchangeCombo4();
+	static bool signal;
+	static bool cmp_by_class(StuInfo a, StuInfo b);
+	static bool cmp_by_score1(StuInfo a, StuInfo b);
+	static bool cmp_by_score2(StuInfo a, StuInfo b);
+	static bool cmp_by_score3(StuInfo a, StuInfo b);
 };

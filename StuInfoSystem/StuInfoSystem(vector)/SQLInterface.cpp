@@ -94,3 +94,32 @@ bool SQLInterface::UpDateInfo(StuInfo oldInfo, StuInfo newInfo)
 	return true;
 }
 
+vector<StuInfo> SQLInterface::SelectInfo(CString name)
+{
+	vector<StuInfo> result;
+	snprintf(sql, SQL_MAX, "select * from info1 where name='%s'",name.GetBuffer());
+	int ret = mysql_real_query(&mysqlCon,sql,(unsigned long)strlen(sql));
+	CString strSQL;
+	strSQL.Format(_T("µ˜ ‘SQL: %hs"), sql);
+	AfxMessageBox(strSQL);
+	if (ret)
+	{
+		CString errMsg;
+		errMsg.Format(_T("≤È’“ ß∞‹£°MySQL¥ÌŒÛ£∫%s"),mysql_error(&mysqlCon) );
+		AfxMessageBox(errMsg);
+		return result;
+	}
+	res = mysql_store_result(&mysqlCon);
+	while (row = mysql_fetch_row(res))
+	{
+		StuInfo stuinfo = StuInfo(row[0],row[1],atoi(row[2]),_ttof(row[3]), _ttof(row[4]), _ttof(row[5]));
+		result.push_back(stuinfo);
+	}
+	return result;
+}
+
+void SQLInterface::Close_SQL()
+{
+	mysql_close(&mysqlCon);
+}
+

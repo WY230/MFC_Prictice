@@ -14,5 +14,7 @@ public:
 	bool AddData(StuInfo Info);
 	bool DelData(StuInfo Info);
 	bool UpDateInfo(StuInfo oldInfo, StuInfo newInfo);
+	vector<StuInfo> SelectInfo(CString name);
+	void Close_SQL();
 };
 

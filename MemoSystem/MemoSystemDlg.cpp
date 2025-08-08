@@ -52,6 +52,7 @@ END_MESSAGE_MAP()
 
 CMemoSystemDlg::CMemoSystemDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MEMOSYSTEM_DIALOG, pParent)
+	, m_strselectid(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -60,6 +61,7 @@ void CMemoSystemDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_list);
+	DDX_Text(pDX, IDC_EDIT1, m_strselectid);
 }
 
 BEGIN_MESSAGE_MAP(CMemoSystemDlg, CDialogEx)
@@ -69,6 +71,11 @@ BEGIN_MESSAGE_MAP(CMemoSystemDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMemoSystemDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMemoSystemDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON4, &CMemoSystemDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON3, &CMemoSystemDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON5, &CMemoSystemDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON9, &CMemoSystemDlg::OnBnClickedButton9)
+	ON_BN_CLICKED(IDC_BUTTON6, &CMemoSystemDlg::OnBnClickedButton6)
+	ON_BN_CLICKED(IDC_BUTTON7, &CMemoSystemDlg::OnBnClickedButton7)
 END_MESSAGE_MAP()
 
 
@@ -168,7 +175,7 @@ void CMemoSystemDlg::OnBnClickedButton2()
 	// TODO: 在此添加控件通知处理程序代码
 	CString filter;
 	filter = "文本文档(*.txt)|*.txt|全部文档(*.*)|*.*||";
-	CFileDialog dlg(TRUE, _T("*.txt"), NULL, OFN_HIDEREADONLY, filter,this);
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY, filter,this);
 	if (dlg.DoModal() == IDOK)
 	{
 		strfilepath = dlg.GetPathName();
@@ -204,7 +211,7 @@ void CMemoSystemDlg::OnBnClickedButton1()
 	// TODO: 在此添加控件通知处理程序代码
 	if (dlgadd.DoModal() == IDOK)
 	{
-		m_interface.Add(strfilepath,CInfo(atoi(dlgadd.m_strid),dlgadd.m_strlastname.GetBuffer(), dlgadd.m_strfirstname.GetBuffer(),
+		m_interface.Add(CInfo(atoi(dlgadd.m_strid),dlgadd.m_strlastname.GetBuffer(), dlgadd.m_strfirstname.GetBuffer(),
 		dlgadd.m_strdate.GetBuffer(), dlgadd.m_strcontent.GetBuffer()));
 		MessageBox(_T("添加成功！"), _T("提示"));
 		Display();
@@ -232,12 +239,137 @@ void CMemoSystemDlg::OnBnClickedButton4()
 		i = MessageBox(_T("确定要删除所选行的信息吗？"), _T("提示"), MB_YESNO | MB_ICONQUESTION);
 		if (i == IDYES) 
 		{
-			m_interface.Del(strfilepath, index);
+			m_interface.Del( index);
 			MessageBox(_T("删除成功！"), _T("提示"));
 			index = -1;
 			Display();
 		}
 		
+	}
+	
+}
+
+void CMemoSystemDlg::OnBnClickedButton3()
+{
+	
+	// TODO: 在此添加控件通知处理程序代码
+	int index = m_list.GetSelectionMark();
+	dlgupdate.m_newid.Format(_T("%d"), m_interface.Info[index].m_id);
+	dlgupdate.m_newlastname.Format(_T("%s"), m_interface.Info[index].m_lastname.c_str());
+	dlgupdate.m_newfirstname.Format(_T("%s"), m_interface.Info[index].m_firstname.c_str());
+	dlgupdate.m_newdate.Format(_T("%s"), m_interface.Info[index].m_date.c_str());
+	dlgupdate.m_newcontect.Format(_T("%s"), m_interface.Info[index].m_content.c_str());
+	UpdateData(false);
+	if (index == -1)
+	{
+		MessageBox(_T("请选择要修改的行"), _T("提示"));
+		return;
+	}
+	else
+	{
+		if (dlgupdate.DoModal() == IDOK)
+		{
+			CInfo info = CInfo(atoi(dlgupdate.m_newid), dlgupdate.m_newlastname.GetBuffer(), dlgupdate.m_newfirstname.GetBuffer(),
+			dlgupdate.m_newdate.GetBuffer(), dlgupdate.m_newcontect.GetBuffer());
+			m_interface.Update(index, info);
+			UINT i;
+			i = MessageBox(_T("确定要修改所选行的信息吗？"), _T("提示"), MB_YESNO | MB_ICONQUESTION);
+			if (i == IDYES)
+			{
+				MessageBox(_T("修改成功！"), _T("提示"));
+				Display();
+			}
+			index = -1;
+		}
+		
+	}
+}
+
+void CMemoSystemDlg::OnBnClickedButton5()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	if (m_strselectid == "")
+	{
+		MessageBox(_T("请输入要查找的id"), _T("提示"));
+		return;
+	}
+	else
+	{
+		int index = atoi(m_strselectid);
+		m_interface.Select(index);
+		if (m_interface.selectresult.size() > 0)
+		{
+			m_list.DeleteAllItems();
+			CString str;
+			for (int i = 0; i < m_interface.selectresult.size(); i++)
+			{
+				str.Format(_T("%d"), m_interface.selectresult[i].m_id);
+				m_list.InsertItem(i, str);
+				str.Format(_T("%s"), m_interface.selectresult[i].m_lastname.c_str());
+				m_list.SetItemText(i, 1, str);
+				str.Format(_T("%s"), m_interface.selectresult[i].m_firstname.c_str());
+				m_list.SetItemText(i, 2, str);
+				str.Format(_T("%s"), m_interface.selectresult[i].m_date.c_str());
+				m_list.SetItemText(i, 3, str);
+				str.Format(_T("%s"), m_interface.selectresult[i].m_content.c_str());
+				m_list.SetItemText(i, 4, str);
+			}
+			m_interface.selectresult.clear();
+			m_strselectid.Empty();
+			UpdateData(FALSE);
+		}
+		else
+		{
+			MessageBox(_T("没有找到该编号的信息！"), _T("提示"));
+			return;
+		}
+	}
+	
+}
+
+void CMemoSystemDlg::OnBnClickedButton9()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	Display();
+}
+
+void CMemoSystemDlg::OnBnClickedButton6()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if (m_interface.Save(strfilepath))
+	{
+		MessageBox(_T("保存成功"), _T("提示"));
+		isSaved = true;
+	}
+	else
+	{
+		MessageBox(_T("保存失败"), _T("提示"));
+		return;
+	}
+}
+
+void CMemoSystemDlg::OnBnClickedButton7()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if (isSaved == false)
+	{
+		UINT i;
+		i = MessageBox(_T("是否保存？"), _T("提示"), MB_YESNO | MB_ICONQUESTION);
+		if (i == IDYES)
+		{
+			OnBnClickedButton6();
+			exit(0);
+
+		}
+		else
+		{
+			exit(0);
+		}
+	}
+	else
+	{
+		exit(0);
 	}
 	
 }

@@ -186,6 +186,7 @@
     <ClInclude Include="CADD.h" />
     <ClInclude Include="CInfo.h" />
     <ClInclude Include="CInterface.h" />
+    <ClInclude Include="CUpdate.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MemoSystem.h" />
     <ClInclude Include="MemoSystemDlg.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="CADD.cpp" />
     <ClCompile Include="CInfo.cpp" />
     <ClCompile Include="CInterface.cpp" />
+    <ClCompile Include="CUpdate.cpp" />
     <ClCompile Include="MemoSystem.cpp" />
     <ClCompile Include="MemoSystemDlg.cpp" />
     <ClCompile Include="pch.cpp">

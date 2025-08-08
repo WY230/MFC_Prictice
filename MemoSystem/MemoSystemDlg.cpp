@@ -213,6 +213,7 @@ void CMemoSystemDlg::OnBnClickedButton1()
 	{
 		m_interface.Add(CInfo(atoi(dlgadd.m_strid),dlgadd.m_strlastname.GetBuffer(), dlgadd.m_strfirstname.GetBuffer(),
 		dlgadd.m_strdate.GetBuffer(), dlgadd.m_strcontent.GetBuffer()));
+		isSaved = false;
 		MessageBox(_T("添加成功！"), _T("提示"));
 		Display();
 		dlgadd.m_strid.Empty();
@@ -240,9 +241,15 @@ void CMemoSystemDlg::OnBnClickedButton4()
 		if (i == IDYES) 
 		{
 			m_interface.Del( index);
+			isSaved = false;
 			MessageBox(_T("删除成功！"), _T("提示"));
-			index = -1;
+			m_list.SetSelectionMark(-1);
 			Display();
+		}
+		else
+		{
+			m_list.SetSelectionMark(-1);
+			return;
 		}
 		
 	}
@@ -254,12 +261,7 @@ void CMemoSystemDlg::OnBnClickedButton3()
 	
 	// TODO: 在此添加控件通知处理程序代码
 	int index = m_list.GetSelectionMark();
-	dlgupdate.m_newid.Format(_T("%d"), m_interface.Info[index].m_id);
-	dlgupdate.m_newlastname.Format(_T("%s"), m_interface.Info[index].m_lastname.c_str());
-	dlgupdate.m_newfirstname.Format(_T("%s"), m_interface.Info[index].m_firstname.c_str());
-	dlgupdate.m_newdate.Format(_T("%s"), m_interface.Info[index].m_date.c_str());
-	dlgupdate.m_newcontect.Format(_T("%s"), m_interface.Info[index].m_content.c_str());
-	UpdateData(false);
+	
 	if (index == -1)
 	{
 		MessageBox(_T("请选择要修改的行"), _T("提示"));
@@ -267,6 +269,12 @@ void CMemoSystemDlg::OnBnClickedButton3()
 	}
 	else
 	{
+		dlgupdate.m_newid.Format(_T("%d"), m_interface.Info[index].m_id);
+		dlgupdate.m_newlastname.Format(_T("%s"), m_interface.Info[index].m_lastname.c_str());
+		dlgupdate.m_newfirstname.Format(_T("%s"), m_interface.Info[index].m_firstname.c_str());
+		dlgupdate.m_newdate.Format(_T("%s"), m_interface.Info[index].m_date.c_str());
+		dlgupdate.m_newcontect.Format(_T("%s"), m_interface.Info[index].m_content.c_str());
+		UpdateData(false);
 		if (dlgupdate.DoModal() == IDOK)
 		{
 			CInfo info = CInfo(atoi(dlgupdate.m_newid), dlgupdate.m_newlastname.GetBuffer(), dlgupdate.m_newfirstname.GetBuffer(),
@@ -276,12 +284,20 @@ void CMemoSystemDlg::OnBnClickedButton3()
 			i = MessageBox(_T("确定要修改所选行的信息吗？"), _T("提示"), MB_YESNO | MB_ICONQUESTION);
 			if (i == IDYES)
 			{
+				isSaved = false;
 				MessageBox(_T("修改成功！"), _T("提示"));
+				m_list.SetSelectionMark(-1);
 				Display();
 			}
-			index = -1;
+			
 		}
-		
+		else
+		{
+			m_list.SetSelectionMark(-1);
+			//MessageBox(_T("123！"), _T("提示"));
+			return;
+		}
+			
 	}
 }
 
@@ -339,8 +355,9 @@ void CMemoSystemDlg::OnBnClickedButton6()
 	// TODO: 在此添加控件通知处理程序代码
 	if (m_interface.Save(strfilepath))
 	{
-		MessageBox(_T("保存成功"), _T("提示"));
 		isSaved = true;
+		MessageBox(_T("保存成功"), _T("提示"));
+		
 	}
 	else
 	{

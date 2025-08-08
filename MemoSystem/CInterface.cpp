@@ -5,11 +5,17 @@ bool CInterface::Open(CString filepath)
 {
 	fstream in(filepath, ios::in);
 	CInfo m_info;
+	string line;
 	if (in.is_open())
 	{
-		num ;  //记录有多少条数据
-		in >> num; 
-		for (int i = 0; i < num; i++)
+		while (getline(in, line))
+		{
+			num++;
+		}
+		// 重置文件指针
+		in.clear();  // 清除eof/fail状态
+		in.seekg(0); // 回到文件开头
+		for(int i=0;i <num;i++)
 		{
 			m_info.Load(in);
 			Info.push_back(m_info);
@@ -21,17 +27,35 @@ bool CInterface::Open(CString filepath)
 	return false;
 }
 
+//文本文档
+//bool CInterface::Save(CString filepath)
+//{
+//	fstream out(filepath, ios::out);
+//	if (out.is_open())
+//	{
+//		num = Info.size();
+//		for (int i = 0; i < num; i++)
+//		{
+//			out << Info[i].m_id << "\t\t" << Info[i].m_lastname << "\t\t" << Info[i].m_firstname << "\t\t"
+//				<< Info[i].m_date << "\t\t" << Info[i].m_content << endl;
+//		}
+//		out.close();
+//		return true;
+//	}
+//	return false;
+//}
+
+//xlsx转为csv
 bool CInterface::Save(CString filepath)
 {
 	fstream out(filepath, ios::out);
 	if (out.is_open())
 	{
 		num = Info.size();
-		out << num << endl;
 		for (int i = 0; i < num; i++)
 		{
-			out << Info[i].m_id << "\t\t" << Info[i].m_lastname << "\t\t" << Info[i].m_firstname << "\t\t"
-				<< Info[i].m_date << "\t\t" << Info[i].m_content << endl;
+			out << Info[i].m_id << ",," << Info[i].m_lastname << ",," << Info[i].m_firstname << ",,"
+				<< Info[i].m_date << ",," << Info[i].m_content << endl;
 		}
 		out.close();
 		return true;

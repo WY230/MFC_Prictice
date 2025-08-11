@@ -45,10 +45,12 @@ void DLG2::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EnuseMemory, m_eum);
 	DDX_Text(pDX, IDC_VirtualMemory, m_vm);
 	DDX_Text(pDX, IDC_EnuseVMemory, m_euvm);
+	DDX_Control(pDX, IDC_CHECK1, m_check1);
 }
 
 
 BEGIN_MESSAGE_MAP(DLG2, CDialogEx)
+	ON_BN_CLICKED(IDC_CHECK1, &DLG2::OnBnClickedCheck1)
 END_MESSAGE_MAP()
 BOOL DLG2::OnInitDialog()
 {
@@ -134,13 +136,50 @@ BOOL DLG2::OnInitDialog()
 	status.dwLength = sizeof(status);
 	if (GlobalMemoryStatusEx(&status))
 	{
-		m_gm.Format(_T("%llu MB"), status.ullTotalPhys/(1024*1024));
-		m_eum.Format(_T("%llu MB"), status.ullAvailPhys / (1024 * 1024));
-		m_vm.Format(_T("%llu MB"), status.ullTotalVirtual / (1024 * 1024));
-		m_euvm.Format(_T("%llu MB"), status.ullAvailVirtual / (1024 * 1024));
+		if (m_check1.GetCheck() == BST_CHECKED)
+		{
+			m_gm.Format(_T("%llu GB"), status.ullTotalPhys / (1024 * 1024*1024));
+			m_eum.Format(_T("%llu GB"), status.ullAvailPhys / (1024 * 1024*1024));
+			m_vm.Format(_T("%llu GB"), status.ullTotalPageFile / (1024 * 1024*1024));
+			m_euvm.Format(_T("%llu GB"), status.ullAvailPageFile / (1024 * 1024*1024));
+		}
+		else
+		{
+			m_gm.Format(_T("%llu MB"), status.ullTotalPhys / (1024 * 1024));
+			m_eum.Format(_T("%llu MB"), status.ullAvailPhys / (1024 * 1024));
+			m_vm.Format(_T("%llu MB"), status.ullTotalPageFile / (1024 * 1024));
+			m_euvm.Format(_T("%llu MB"), status.ullAvailPageFile / (1024 * 1024));
+		}
+		
 	}
 	UpdateData(FALSE);
 	return TRUE;
 }
 
 // DLG2 消息处理程序
+
+void DLG2::OnBnClickedCheck1()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	MEMORYSTATUSEX status;
+	status.dwLength = sizeof(status);
+	if (GlobalMemoryStatusEx(&status))
+	{
+		if (m_check1.GetCheck() == BST_CHECKED)
+		{
+			m_gm.Format(_T("%llu GB"), status.ullTotalPhys / (1024 * 1024 * 1024));
+			m_eum.Format(_T("%llu GB"), status.ullAvailPhys / (1024 * 1024 * 1024));
+			m_vm.Format(_T("%llu GB"), status.ullTotalPageFile / (1024 * 1024 * 1024));
+			m_euvm.Format(_T("%llu GB"), status.ullAvailPageFile / (1024 * 1024 * 1024));
+		}
+		else
+		{
+			m_gm.Format(_T("%llu MB"), status.ullTotalPhys / (1024 * 1024));
+			m_eum.Format(_T("%llu MB"), status.ullAvailPhys / (1024 * 1024));
+			m_vm.Format(_T("%llu MB"), status.ullTotalPageFile / (1024 * 1024));
+			m_euvm.Format(_T("%llu MB"), status.ullAvailPageFile / (1024 * 1024));
+		}
+
+	}
+	UpdateData(FALSE);
+}

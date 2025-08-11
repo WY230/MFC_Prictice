@@ -10,6 +10,7 @@ m_firstname(firstname),m_date(date),m_content(content)
 {
 }
 
+//文本文档（以空格作为分隔符）
 //void CInfo::Load(fstream& in)
 //{
 //	in >> m_id;

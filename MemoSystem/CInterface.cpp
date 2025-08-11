@@ -27,7 +27,7 @@ bool CInterface::Open(CString filepath)
 	return false;
 }
 
-//文本文档
+//文本文档(以空格作为分隔符)
 //bool CInterface::Save(CString filepath)
 //{
 //	fstream out(filepath, ios::out);

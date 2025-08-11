@@ -7,6 +7,7 @@
 #include"DLG1.h"
 #include"DLG2.h"
 #include"DLG3.h"
+#include"CSoftWare.h"
 
 // CMFCWinSysInfoDlg 对话框
 class CMFCWinSysInfoDlg : public CDialogEx
@@ -41,6 +42,12 @@ private:
 	DLG3 dlg3;
 public:
 	afx_msg void OnBnClickedButton1();
-
+	vector <CSoftWare> SoftwareInfo;
+	vector <CMemory> MemoryInfo;
 	afx_msg void OnBnClickedButton2();
+	bool SaveSoftWareInofo();
+	bool SaveSystemInofo();
+	bool SaveMemoryInofo();
+	bool isSaved=false;
+	afx_msg void OnBnClickedButton3();
 };

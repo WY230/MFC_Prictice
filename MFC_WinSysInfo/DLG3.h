@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "afxdialogex.h"
-
+#include"CMemory.h"
 
 // DLG3 对话框
 
@@ -13,6 +13,8 @@ public:
 	virtual ~DLG3();
 	virtual BOOL OnInitDialog();
 	void ShowDriveInfo();
+	void ShowMemoryInfo();
+	vector<CMemory> GetMemoryInfo();
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DLG3 };
@@ -27,4 +29,6 @@ public:
 	CString dlg3_C;
 	CString dlg3_D;
 	int index=0;
+	CButton m_check2;
+	afx_msg void OnBnClickedCheck1();
 };

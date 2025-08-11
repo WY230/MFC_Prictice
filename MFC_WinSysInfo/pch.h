@@ -6,8 +6,10 @@
 
 #ifndef PCH_H
 #define PCH_H
-
+#include<string>
+#include<vector>
+using namespace std;
 // 添加要在此处预编译的标头
 #include "framework.h"
-
+#include<fstream>
 #endif //PCH_H

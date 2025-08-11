@@ -50,7 +50,8 @@ void DLG1::EnumInstalledSoftware()
 
     while (true)
     {
-        dwSize = sizeof(szSubKeyName);
+       //dwSize = sizeof(szSubKeyName);
+        dwSize = _countof(szSubKeyName);//计算字符数而不是字节数
         if (RegEnumKeyEx(hUninstallKey, dwIndex, szSubKeyName, &dwSize, NULL, NULL, NULL, NULL) != ERROR_SUCCESS)
         {
             break;
@@ -75,7 +76,7 @@ void DLG1::EnumInstalledSoftware()
                 {
                     lstrcpy(szDisplayVersion, _T(""));
                 }
-               // 获取厂商
+                // 获取厂商
                 dwSize = sizeof(szPublisher);
                 if (RegQueryValueEx(hAppKey, _T("Publisher"), NULL, NULL, (LPBYTE)szPublisher, &dwSize) != ERROR_SUCCESS)
                 {
@@ -85,13 +86,13 @@ void DLG1::EnumInstalledSoftware()
                 dwSize = sizeof(szInstallLocation);
                 if (RegQueryValueEx(hAppKey, _T("InstallLocation"), NULL, NULL, (LPBYTE)szInstallLocation, &dwSize) != ERROR_SUCCESS)
                 {
-                        if (RegQueryValueEx(hAppKey, _T("UninstallString"), NULL, NULL, (LPBYTE)szInstallLocation, &dwSize) != ERROR_SUCCESS)
-                        {
-                            lstrcpy(szInstallLocation, _T(""));
-                        }
+                    if (RegQueryValueEx(hAppKey, _T("UninstallString"), NULL, NULL, (LPBYTE)szInstallLocation, &dwSize) != ERROR_SUCCESS)
+                    {
+                        lstrcpy(szInstallLocation, _T(""));
+                    }
                 }
                 // 添加到列表控件
-                int nItem=m_list1.InsertItem(m_list1.GetItemCount(), szDisplayName);
+                int nItem = m_list1.InsertItem(m_list1.GetItemCount(), szDisplayName);
                 m_list1.SetItemText(nItem, 1, szDisplayVersion);
                 m_list1.SetItemText(nItem, 2, szPublisher);
                 m_list1.SetItemText(nItem, 3, szInstallLocation);
@@ -102,7 +103,28 @@ void DLG1::EnumInstalledSoftware()
         dwIndex++;
     }
     RegCloseKey(hUninstallKey);
-    
+
+}
+
+vector<CSoftWare> DLG1::Getsoftwareinfo()
+{
+    vector<CSoftWare> Infoarr;
+    int num=m_list1.GetItemCount();
+    if (num == 0)
+    {
+        return Infoarr;
+    }
+    for (int i = 0; i < num; i++)
+    {
+        CSoftWare info(
+            CW2A(m_list1.GetItemText(i, 0)).m_psz,
+            CW2A(m_list1.GetItemText(i, 1)).m_psz,
+            CW2A(m_list1.GetItemText(i, 2)).m_psz,
+            CW2A(m_list1.GetItemText(i, 3)).m_psz
+        );
+        Infoarr.push_back(info);
+    }
+    return Infoarr;
 }
 
 BOOL DLG1::OnInitDialog()

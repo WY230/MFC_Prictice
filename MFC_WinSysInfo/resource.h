@@ -26,6 +26,8 @@
 #define IDC_EnuseVMemory                1012
 #define IDC_Dlg3_C                      1013
 #define IDC_Dlg3_D                      1014
+#define IDC_CHECK1                      1016
+#define IDC_BUTTON3                     1018
 
 // Next default values for new objects
 // 
@@ -33,7 +35,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1015
+#define _APS_NEXT_CONTROL_VALUE         1019
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

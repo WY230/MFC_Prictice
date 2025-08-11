@@ -45,6 +45,12 @@
     <ClInclude Include="DLG3.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CSoftWare.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMemory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFC_WinSysInfo.cpp">
@@ -66,6 +72,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DLG3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoftWare.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMemory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

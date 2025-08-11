@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "afxdialogex.h"
+#include"CSoftWare.h"
+#include"pch.h"
 
 
 // DLG1 对话框
@@ -13,6 +15,7 @@ public:
 	virtual ~DLG1();
 	virtual BOOL OnInitDialog();
 	void EnumInstalledSoftware();
+	vector<CSoftWare> Getsoftwareinfo();
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DLG1 };

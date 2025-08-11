@@ -21,7 +21,9 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
-private:
+	
+public:
+	CButton m_check1;
 	CString m_wn;
 	CString m_un;
 	CString m_sd;
@@ -32,4 +34,6 @@ private:
 	CString m_eum;
 	CString m_vm;
 	CString m_euvm;
+	
+	afx_msg void OnBnClickedCheck1();
 };

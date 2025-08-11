@@ -11,6 +11,7 @@
 #include"DLG1.h"
 #include"DLG2.h"
 #include"DLG3.h"
+#include"CSoftWare.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -72,6 +73,7 @@ BEGIN_MESSAGE_MAP(CMFCWinSysInfoDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CMFCWinSysInfoDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMFCWinSysInfoDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CMFCWinSysInfoDlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -185,5 +187,103 @@ void CMFCWinSysInfoDlg::OnBnClickedButton1()
 void CMFCWinSysInfoDlg::OnBnClickedButton2()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	CMFCWinSysInfoDlg::OnOK();
+	SoftwareInfo = dlg1.Getsoftwareinfo();
+	MemoryInfo = dlg3.GetMemoryInfo();
+	UINT i;
+	i = MessageBox(_T("是否全部保存"), _T("提示"), MB_YESNO | MB_ICONQUESTION);
+	if (i == IDYES)
+	{
+		SaveSoftWareInofo();
+		SaveMemoryInofo();
+		SaveSystemInofo();
+		isSaved = true;
+		MessageBox(_T("保存成功！"), _T("提示"));
+	}
+}
+
+bool CMFCWinSysInfoDlg::SaveSoftWareInofo()
+{
+	fstream out("SoftWareInfo.csv", ios::out);
+	if (out.is_open())
+	{
+		out << "软件名称" << ",,,," << "版本号" << ",,,," << "生产厂商" << ",,,," << "安装路径" << endl;
+		int num = SoftwareInfo.size();
+		for (int i = 0; i < num; i++)
+		{
+			out << SoftwareInfo[i].m_softwarename << ",,,," << SoftwareInfo[i].m_version << ",,,," << SoftwareInfo[i].m_productor << ",,,,"
+				<< SoftwareInfo[i].m_install <<endl;
+		}
+		out.close();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool CMFCWinSysInfoDlg::SaveMemoryInofo()
+{
+	fstream out("MemoryInfo.csv", ios::out);
+	if (out.is_open())
+	{
+		out << "盘符" << ",," << "磁盘类型" << ",," << "磁盘名称" << ",," << "文件系统"
+			<< ",," << "全部容量" << ",," << "可用容量" << endl;
+		int num = MemoryInfo.size();
+		for (int i = 0; i < num; i++)
+		{
+			out << MemoryInfo[i].m_symbol << ",," << MemoryInfo[i].m_type << ",," << MemoryInfo[i].m_name<< ",,"
+				<< MemoryInfo[i].m_filesystem << ",," << MemoryInfo[i].m_totalmemory << ",," << MemoryInfo[i].m_availmemory << endl;
+		}
+		out.close();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool CMFCWinSysInfoDlg::SaveSystemInofo()
+{
+	fstream out("SystemInfo.csv", ios::out);
+	if (out.is_open())
+	{
+		out << "windows名称：" <<",," << CW2A(dlg2.m_wn).m_psz << endl;
+		out << "用户名：" << ",," <<CW2A(dlg2.m_un).m_psz<< endl;
+		out << "系统所在文件夹：" << ",," <<CW2A(dlg2.m_sd).m_psz<< endl;
+		out << "CPU名称：" << ",," <<CW2A(dlg2.m_cn).m_psz<< endl;
+		out << "CPU速度：" << ",," <<CW2A(dlg2.m_cs).m_psz<< endl;
+		out << "CPU厂商信息：" << ",," <<CW2A(dlg2.m_ci).m_psz<< endl;
+		out << "主内存：" << ",," <<CW2A(dlg2.m_gm).m_psz<< endl;
+		out << "主内存可使用量：" << ",," <<CW2A(dlg2.m_eum).m_psz << endl;
+		out << "虚拟内存：" << ",," <<CW2A(dlg2.m_vm).m_psz<< endl;
+		out << "虚拟内存可使用量:" << ",," <<CW2A(dlg2.m_euvm).m_psz << endl;
+		out.close();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+void CMFCWinSysInfoDlg::OnBnClickedButton3()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if (isSaved == false)
+	{
+		UINT i;
+		i = MessageBox(_T("是否全部保存后退出？"),_T("提示"), MB_YESNO | MB_ICONQUESTION);
+		if (i == IDYES)
+		{
+			SoftwareInfo = dlg1.Getsoftwareinfo();
+			MemoryInfo = dlg3.GetMemoryInfo();
+			SaveSoftWareInofo();
+			SaveSystemInofo();
+			SaveMemoryInofo();
+			MessageBox(_T("保存成功！"), _T("提示"));
+			exit(0);
+		}	
+	}
+	exit(0);
 }

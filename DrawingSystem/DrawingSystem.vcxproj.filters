@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MFC_WinSysInfo.h">
+    <ClInclude Include="DrawingSystem.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MFC_WinSysInfoDlg.h">
+    <ClInclude Include="DrawingSystemDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -33,69 +33,30 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="TabSheet.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DLG1.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DLG2.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DLG3.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CSoftWare.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CMemory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MFC_WinSysInfo.cpp">
+    <ClCompile Include="DrawingSystem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MFC_WinSysInfoDlg.cpp">
+    <ClCompile Include="DrawingSystemDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TabSheet.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="DLG1.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="DLG2.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="DLG3.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CSoftWare.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CMemory.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MFCWinSysInfo.rc">
+    <ResourceCompile Include="DrawingSystem.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MFCWinSysInfo.rc2">
+    <None Include="res\DrawingSystem.rc2">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MFC_WinSysInfo.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="C:\Users\O.O\Desktop\open-laptop-computer_icon-icons.com_73474.ico">
+    <Image Include="res\DrawingSystem.ico">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

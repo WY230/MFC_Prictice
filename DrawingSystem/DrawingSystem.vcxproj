@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectGuid>{8EE06595-D7C0-B2AB-A2D7-8FE778DDB93E}</ProjectGuid>
+    <ProjectGuid>{B7E38724-11DC-1883-06DA-F82E675CA3F0}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
-    <RootNamespace>MFCWinSysInfo</RootNamespace>
+    <RootNamespace>DrawingSystem</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -183,44 +183,31 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CMemory.h" />
-    <ClInclude Include="CSoftWare.h" />
-    <ClInclude Include="DLG1.h" />
-    <ClInclude Include="DLG2.h" />
-    <ClInclude Include="DLG3.h" />
+    <ClInclude Include="DrawingSystem.h" />
+    <ClInclude Include="DrawingSystemDlg.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="MFC_WinSysInfo.h" />
-    <ClInclude Include="MFC_WinSysInfoDlg.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="TabSheet.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CMemory.cpp" />
-    <ClCompile Include="CSoftWare.cpp" />
-    <ClCompile Include="DLG1.cpp" />
-    <ClCompile Include="DLG2.cpp" />
-    <ClCompile Include="DLG3.cpp" />
-    <ClCompile Include="MFC_WinSysInfo.cpp" />
-    <ClCompile Include="MFC_WinSysInfoDlg.cpp" />
+    <ClCompile Include="DrawingSystem.cpp" />
+    <ClCompile Include="DrawingSystemDlg.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TabSheet.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MFCWinSysInfo.rc" />
+    <ResourceCompile Include="DrawingSystem.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MFCWinSysInfo.rc2" />
+    <None Include="res\DrawingSystem.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="C:\Users\O.O\Desktop\open-laptop-computer_icon-icons.com_73474.ico" />
-    <Image Include="res\MFC_WinSysInfo.ico" />
+    <Image Include="res\DrawingSystem.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
